@@ -6,11 +6,11 @@ sequenceDiagram
         InputHandler-->>Agent: gesture
     end
     opt enqueue
-        Agent-->>InputHandler: < inputGrabber, bogusEvent >
+        Agent-->>InputHandler: < inputGrabber, event >
     end
     loop dequeue
-      InputHandler->>Grabber: bogusEvent
+      InputHandler->>Grabber: event
     end
-    Note over Grabber: performInteraction(bogusEvent)
+    Note over Grabber: interact(event)
 
     %%Note over InputHandler: Agent collection

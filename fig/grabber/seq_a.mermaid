@@ -3,7 +3,7 @@ sequenceDiagram
     alt polling
         User->>InputHandler: gesture
         Note over InputHandler: Agent collection
-        %alt updateTrackedGrabberFeed
+        %alt pollFeed
             InputHandler->>Agent: gesture
         %else handleFeed
             %InputHandler-->>Agent: gesture

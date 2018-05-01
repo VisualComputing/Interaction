@@ -6,10 +6,10 @@ sequenceDiagram
         InputHandler-->>Agent: gesture
     end
     Note over Agent: Grabber collection
-    %loop updateTrackedGrabber
-        Agent->>Grabber: bogusEvent
+    %loop poll
+        Agent->>Grabber: event
     %end
-    opt checkIfGrabsInput
+    opt track
         Grabber-->>Agent: grabber
     end
     Note over Agent,Grabber: inputGrabber = trackedGrabber != null ? trackedGrabber : defaultGrabber
