@@ -18,7 +18,7 @@
 
 H:
 
-# Proscene3 Design
+# Interaction in [frames](https://github.com/VisualComputing/framesjs)
 
 Jean Pierre Charalambos
 
@@ -27,24 +27,15 @@ H:
 # Index
 
  1. Goal <!-- .element: class="fragment" data-fragment-index="1"-->
- 2. Design<!-- .element: class="fragment" data-fragment-index="2"-->
- 3. BIAS<!-- .element: class="fragment" data-fragment-index="3"-->
- 4. Dandelion<!-- .element: class="fragment" data-fragment-index="4"-->
- 5. Proscene3<!-- .element: class="fragment" data-fragment-index="5"-->
+ 2. Frames' design<!-- .element: class="fragment" data-fragment-index="2"-->
+ 3. Applications<!-- .element: class="fragment" data-fragment-index="3"-->
+ 4. Future work<!-- .element: class="fragment" data-fragment-index="4"-->
  
 H:
 
-## Goal: History
-
-<li class="fragment"> Proscene 1 (processing 1 cycle)
-<li class="fragment"> Proscene 2 (processing 2 cycle)
-<li class="fragment"> Proscene 3...
-
-V:
-
 ## Goal
 
-Provide interactivity to application objects from any input source
+Provide _interactivity_ to _application objects_ from any _input source_
 
 in the 'simplest' possible way <!-- .element: class="fragment" data-fragment-index="1"-->
 
@@ -95,112 +86,55 @@ N:
 WIMP: "window, icon, menu, pointing device"
 classical 2D widgets:  menus and icons
 
-V:
-
-## Goal
-
-Provide _interactivity_ to _application objects_ from any _input source_
-
-V:
-
-## Goal
-### Interactivitiy
-
-* Default: navigation and picking & manipulation
-* Custom
-
-V:
-
-## Goal
-### Application Objects
-
-* Visual application objects
-* Non-visual application objects
-
-V:
-
-## Goal
-### Input sources
-
-* Classical
-* Non-classical
-
 H:
 
-## Design: API considerations
+## [Frames](https://github.com/VisualComputing/framesjs) Design: API considerations
 
 <li class="fragment"> Simplicity: Separate _application object_ behaviors from _input sources_
 <li class="fragment"> Flexibility: Simple default (common) behaviors vs challenging ones
 
 V:
 
-## Design
+## [Frames](https://github.com/VisualComputing/framesjs) Design
 
-<li class="fragment"> _Application objects_ -> *Grabbers*
+<li class="fragment"> _Application objects_ -> *Nodes*
 <li class="fragment"> _Input source_ -> *Agents*
-<li class="fragment"> Common _event interface_ -> *BogusEvents*
+<li class="fragment"> Common _event interface_ -> *Events*
 
 V:
 
-## Design
+## [Frames](https://github.com/VisualComputing/framesjs) Design
+### Events
 
-<figure>
-    <img height='400' src='fig/packages.png' />
-    <figcaption>Packages</figcaption>
-</figure>
-
-H:
-
-## Bias
-
-<figure>
-    <img height='400' src='fig/bias.png' />
-    <figcaption>Packages</figcaption>
-</figure>
+Formatted _interface_ between input sources and nodes
 
 V:
 
-## Bias
+## [Frames](https://github.com/VisualComputing/framesjs) Design
+### Events: Types
 
-<figure>
-    <img height='400' src='fig/architecture.png' />
-    <figcaption>Architecture</figcaption>
-</figure>
-
-V:
-
-## BIAS
-### Bogus events
-
-Message _interface_ between input sources and application objects
-
-V:
-
-## BIAS
-### Bogus events: Types
-
- * KeyboardEvent <!-- .element: class="fragment" data-fragment-index="1"-->
- * ClickEvent <!-- .element: class="fragment" data-fragment-index="2"-->
+ * KeyEvent <!-- .element: class="fragment" data-fragment-index="1"-->
+ * TapEvent <!-- .element: class="fragment" data-fragment-index="2"-->
  * MotionEvent <!-- .element: class="fragment" data-fragment-index="3"-->
-   * DOF1Event
-   * DOF2Event
-   * DOF3Event
-   * DOF6Event
+   * MotionEvent1
+   * MotionEvent2
+   * MotionEvent3
+   * MotionEvent6
 
 V:
 
-## BIAS
-### Bogus events: properties
+## [Frames](https://github.com/VisualComputing/framesjs) Design
+### Events: properties
 
-<li class="fragment"> Every _bogus event_ encapsulates a ```Shortcut```
+<li class="fragment"> Every _event_ encapsulates a ```Shortcut```
 <li class="fragment"> A ```flushed()``` event encapsulates a gesture termination message
 <li class="fragment"> Motion events are ```relative``` or ```absolute``` and they have ```speed``` and ```delay```
-<li class="fragment"> Bogus events are _extensible_
+<li class="fragment"> Events are _extensible_
 
 V:
 
-## BIAS
-### Grabbers
+## [Frames](https://github.com/VisualComputing/framesjs) Design
+### Nodes are Grabbers
 
 ```java
 public interface Grabber {
@@ -208,176 +142,77 @@ public interface Grabber {
 	 * Defines the rules to set the application object as
 	 * an input grabber.
 	 */
-	boolean checkIfGrabsInput(BogusEvent event);
+	boolean track(Event event);
 
 	/**
 	 * Defines how the application object should behave
 	 * according to a given BogusEvent, which may hold
 	 * a user-defined action.
 	 */
-	void performInteraction(BogusEvent event);
+	void Interact(Event event);
 }
 
 ```
 
 V:
 
-## BIAS
+## [Frames](https://github.com/VisualComputing/framesjs) Design
 ### Agents
 
-Collect and reduce input into a _BogusEvent_ in order to:
+Collect and reduce input into a _event_ in order to:
 
 <li class="fragment"> Update the _Grabber_ (```agent.inputGrabber()```)
 <li class="fragment"> Perform an interaction on the ```agent.inputGrabber()```
 
 V:
 
-## BIAS
-### Agents
-
-Update the _Grabber_
-
-```java
-protected Grabber updateTrackedGrabber(BogusEvent event)
-```
-
-The ```inputGrabber()``` may be set with ```agent.setDefaultGrabber(Grabber grabber)```
-
-V:
-
-## BIAS
-### Agents
-
-Perform an interaction on the ```inputGrabber()```
-
-```java
-protected <E extends Enum<E>> boolean handle(BogusEvent event)
-```
-
-Two cases arise:
-<li class="fragment"> ```!(inputGrabber() instanceof InteractiveGrabber)``` -> agent send the _bogusEvent_ (to the _Grabber_)
-<li class="fragment"> ```else```  -> agent send the _bogusEvent_ *and* attach an _action_ (to the _InteractiveGrabber_) using a _Branch_. See _Agent branches_
-
-V:
-
-## BIAS
-### Agent branches
-
-<li class="fragment"> An agent _branch_ is a collection of _Profiles_ (why NOT a single one?)
-<li class="fragment"> A _profile_ is a (_bogusEvent_) _shortcut_ _action_ mapping, i.e., ```public class Profile<K extends Shortcut, A extends Action<?>> implements Copyable```
-<li class="fragment"> A _shortcut_ is a _bogusEvent_ mean for invoking an _action_
-
-V:
-
-## BIAS
-### Agent branches: Action
-
-```java
-public interface Action<E extends Enum<E>> {
-	/**
-	 * Returns group to global action item mappings.
-	 */
-	E referenceAction();
-
-	/**
-	 * Returns a description of the action.
-	 */
-	String description();
-}
-```
-
-V:
-
-## BIAS
-### Agent branches: InteractiveGrabbers
-
-```java
-public interface InteractiveGrabber<E extends Enum<E>> extends Grabber {
-	public void setAction(Action<E> action);
-	public Action<E> action();
-}
-```
-
-V:
-
-## BIAS
-### Agent branches: Multi-tempi Actions
-
-Idea is quite simple
-
-Multiple tempi actions (such as press-drag-release with a mouse) may be identified from
-a Grabber by analysing the flow of events respect to an initAction, as follows:
-
-V:
-
-## BIAS
-### Agent branches: Multi-tempi Actions
-
-<li class="fragment"> ```initAction(BogusEvent)``` (1st tempi): sets the ```initAction```, called when ```initAction == null```
-<li class="fragment"> ```execAction(BogusEvent)``` (2nd tempi): continues action execution, called when ```initAction == action()```
-<li class="fragment"> ```flushAction(BogusEvent)``` (3rd tempi): ends action, called when ```BogusEvent.flushed()``` is true or when ```initAction != action()```
-
-H:
-
-## Dandelion
+## [Frames](https://github.com/VisualComputing/framesjs) Design
+### Agents: `poll(event)`
 
 <figure>
-    <img height='400' src='fig/dandelion.png' />
-    <figcaption>Packages</figcaption>
+    <img height='400' src='fig/arch1a.png' />
+    <figcaption>Agents: `poll(event)`</figcaption>
 </figure>
 
 V:
 
-## Dandelion
-
-<li class="fragment"> Default *agents*
-<li class="fragment"> Interactivitiy to *frames* ( _grabber_ coordinate systems)
-
-V:
-
-## Dandelion
-### Packages
-
-<li class="fragment"> *dandelion.branch* -> _InteractiveFrame_ and _InteractiveAvatarFrame_; _MotionAgent_ and _KeyboardAgent_
-<li class="fragment"> *dandelion.geom* -> _Vec_, _Quat_, _Mat_ and _Frame_ (_Quat_ + _Vec_)
-<li class="fragment"> *dandelion.core* -> _Eye_, _GrabberFrame_
-<li class="fragment"> *dandelion.constraint* -> Apply constraints to _Frames_ to limit their motion
-
-V:
-
-## Dandelion
+## [Frames](https://github.com/VisualComputing/framesjs) Design
+### Agents: `event pollFeed()`
 
 <figure>
-    <img height='400' src='fig/iAvatar.png' />
-    <figcaption>Frame hierarchy</figcaption>
+    <img height='400' src='fig/arch2a.png' />
+    <figcaption>Agents: `event pollFeed()`</figcaption>
+</figure>
+
+V:
+
+## [Frames](https://github.com/VisualComputing/framesjs) Design
+### Agents: `handle(event)`
+
+<figure>
+    <img height='400' src='fig/arch1b.png' />
+    <figcaption>Agents: `handle(event)`</figcaption>
+</figure>
+
+V:
+
+## [Frames](https://github.com/VisualComputing/framesjs) Design
+### Agents: `event handleFeed()`
+
+<figure>
+    <img height='400' src='fig/arch2b.png' />
+    <figcaption>Agents: `event handleFeed()`</figcaption>
 </figure>
 
 H:
 
-## Proscene3
-
-<figure>
-    <img height='400' src='fig/packages.png' />
-    <figcaption>Packages</figcaption>
-</figure>
+## Applications
 
 V:
 
-## Proscene3
+## Applications
 
-* Bridge between Dandelion and [Processing3](http://processing.org)
-* _Models_ -> _Grabber_ [PShape](https://processing.org/reference/PShape.html) wrapper implementing ```checkIfGrabsInput(event)``` using a [picking buffer](http://content.gpwiki.org/index.php/OpenGL_Selection_Using_Unique_Color_IDs)
-
-<figure>
-    <img height='300' src='fig/picking_buffer.png' />
-    <figcaption>Picking buffer</figcaption>
-</figure>
-
-V:
-
-## Proscene3: examples
-
-Navigation: All examples
+Navigation
 
 * Orbit-like methods: all examples using a mouse
 * First person: [first person](https://github.com/remixlab/proscene/tree/master/examples/Eye/FirstPersonCamera)
@@ -385,12 +220,19 @@ Navigation: All examples
 
 V:
 
-## Proscene3: examples
+## Applications
 
-Picking and manipulation: all examples with _Frames_
+Picking and manipulation: all examples with _nodes_
 
 V:
 
-## Proscene3: examples
+## Applications
 
 Application control: [deformation](https://github.com/nakednous/Deformation)
+
+H:
+
+## References
+
+* ['A Survey of Interaction Techniques for Interactive 3D Environments', Jankowski et al](https://hal.inria.fr/hal-00789413/)
+* [Proscene: A feature-rich framework for interactive environments](https://www.sciencedirect.com/science/article/pii/S235271101730002X?_rdoc=1&_fmt=high&_origin=gateway&_docanchor=&md5=b8429449ccfc9c30159a5f9aeaa92ffb)
