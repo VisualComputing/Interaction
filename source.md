@@ -208,21 +208,36 @@ H:
 
 ## Applications
 
-V:
-
-## Applications
-
-Navigation
-
-* Orbit-like methods: all examples using a mouse
-* First person: [first person](https://github.com/remixlab/proscene/tree/master/examples/Eye/FirstPersonCamera)
-* Third person: [third person](https://github.com/remixlab/proscene/tree/master/examples/Eye/ThirdPersonCamera) and [flock](https://github.com/remixlab/proscene/tree/master/examples/Timing/Flock)
+* Navigation
+* Picking and manipulation
+* Application control
 
 V:
 
 ## Applications
+### Navigation
 
-Picking and manipulation: all examples with _nodes_
+<li class="fragment"> Orbit-like methods: all examples using a mouse
+<li class="fragment"> First person: first person
+<li class="fragment"> Third person: [FlockOfBoids](https://github.com/VisualComputing/framesjs/tree/processing/examples/Advanced/FlockOfBoids)
+
+V:
+
+## Applications
+### Picking
+
+<li class="fragment"> `FIXED` picking precision, [FlockOfBoids](https://github.com/VisualComputing/framesjs/tree/processing/examples/Advanced/FlockOfBoids)
+<li class="fragment"> `ADAPTIVE` picking precision, [CajasOrientadas](https://github.com/VisualComputing/framesjs/tree/processing/examples/Advanced/CajasOrientadas)
+<li class="fragment"> `EXACT` picking precision, [PostEffects](https://github.com/VisualComputing/framesjs/tree/processing/examples/Demos/PostEffects)
+
+V:
+
+## Applications
+### Manipulation
+
+<li class="fragment"> All examples involving the [mouse]() (default _agent_)
+<li class="fragment"> [Space Navigator](https://github.com/VisualComputing/framesjs/tree/processing/examples/Demos/SpaceNavigator) (custom _agent_)
+<li class="fragment"> [Kinect 6-DOF cemera control](https://www.youtube.com/watch?v=G8SEzFMmMyI) (custom _agent_)
 
 V:
 
