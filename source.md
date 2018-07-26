@@ -88,29 +88,50 @@ classical 2D widgets:  menus and icons
 
 H:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design: API considerations
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design: API considerations
 
-<li class="fragment"> Simplicity: Separate _application object_ behaviors from _input sources_
+<li class="fragment"> Simplicity: Separate _application object_ behaviors from _input_
 <li class="fragment"> Flexibility: Simple default (common) behaviors vs challenging ones
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Application objects
 
-<li class="fragment"> _Application objects_ -> *Nodes*
-<li class="fragment"> _Input source_ -> *Agents*
-<li class="fragment"> Common _event interface_ -> *Events*
+> Behavior -> *Frames*
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Input
+
+> Picking -> Tag a frame using an [Human Interface Device (hid)](https://en.wikipedia.org/wiki/Human_interface_device) name
+
+> Manipulation -> Physical-space based frame interaction
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Application objects
+
+> Behavior -> *Frames*
+
+
+
+
+> Picking = Tag a frame using an HID (name)
+> Manipulation = Manipulate a frame (tagged or untagged)
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Events
 
 Formatted _interface_ between input sources and nodes
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Events: Types
 
  * KeyEvent <!-- .element: class="fragment" data-fragment-index="1"-->
@@ -123,7 +144,7 @@ V:
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Events: properties
 
 <li class="fragment"> Every _event_ encapsulates a ```Shortcut```
@@ -133,7 +154,7 @@ V:
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Nodes are Grabbers
 
 ```java
@@ -156,7 +177,7 @@ public interface Grabber {
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Agents
 
 Collect and reduce input into a _event_ in order to:
@@ -166,7 +187,7 @@ Collect and reduce input into a _event_ in order to:
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Agents: `poll(event)`
 
 <figure>
@@ -176,7 +197,7 @@ V:
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Agents: `event pollFeed()`
 
 <figure>
@@ -186,7 +207,7 @@ V:
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Agents: `handle(event)`
 
 <figure>
@@ -196,7 +217,7 @@ V:
 
 V:
 
-## [Frames](https://github.com/VisualComputing/framesjs) Design
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Agents: `event handleFeed()`
 
 <figure>
