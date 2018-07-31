@@ -88,7 +88,8 @@ classical 2D widgets:  menus and icons
 
 H:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design: API considerations
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### API considerations
 
 <li class="fragment"> Simplicity: Separate _application object_ behaviors from _input_
 <li class="fragment"> Flexibility: Simple default (common) behaviors vs challenging ones
@@ -96,134 +97,186 @@ H:
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Application objects
+### Frame notion
 
-> Behavior -> *Frames*
+> A _frame_ is defined by following affine (composed) transformation: `$T(x,y,z) * R_u(\beta) * S(s)$`, `$s > 0$`
 
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Input
-
-> Picking -> Tag a frame using an [Human Interface Device (hid)](https://en.wikipedia.org/wiki/Human_interface_device) name
-
-> Manipulation -> Physical-space based frame interaction
+<li class="fragment"> A _frame_ is useful to position, orient and scale objects (including the _eye_) within a virtual environment
+<li class="fragment"> The scene may be rendered from any _frame_ point-of-view
 
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Application objects
-
-> Behavior -> *Frames*
-
-
-
-
-> Picking = Tag a frame using an HID (name)
-> Manipulation = Manipulate a frame (tagged or untagged)
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Events
-
-Formatted _interface_ between input sources and nodes
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Events: Types
-
- * KeyEvent <!-- .element: class="fragment" data-fragment-index="1"-->
- * TapEvent <!-- .element: class="fragment" data-fragment-index="2"-->
- * MotionEvent <!-- .element: class="fragment" data-fragment-index="3"-->
-   * MotionEvent1
-   * MotionEvent2
-   * MotionEvent3
-   * MotionEvent6
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Events: properties
-
-<li class="fragment"> Every _event_ encapsulates a ```Shortcut```
-<li class="fragment"> A ```flushed()``` event encapsulates a gesture termination message
-<li class="fragment"> Motion events are ```relative``` or ```absolute``` and they have ```speed``` and ```delay```
-<li class="fragment"> Events are _extensible_
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Nodes are Grabbers
+### Frame notion: Behavior
 
 ```java
-public interface Grabber {
-	/**
-	 * Defines the rules to set the application object as
-	 * an input grabber.
-	 */
-	boolean track(Event event);
-
-	/**
-	 * Defines how the application object should behave
-	 * according to a given BogusEvent, which may hold
-	 * a user-defined action.
-	 */
-	void Interact(Event event);
-}
-
+frame = new Frame();
+pushMatrix();
+// behavior
+applyTransformation(frame);
+// appearance
+drawApplicationObject();
+popMatrix();
 ```
 
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Agents
-
-Collect and reduce input into a _event_ in order to:
-
-<li class="fragment"> Update the _Grabber_ (```agent.inputGrabber()```)
-<li class="fragment"> Perform an interaction on the ```agent.inputGrabber()```
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Agents: `poll(event)`
-
-<figure>
-    <img height='400' src='fig/arch1a.png' />
-    <figcaption>Agents: `poll(event)`</figcaption>
-</figure>
+```java
+applyTransformation(frame) {
+  // T(x,y,z)
+  translate(frame.translation());
+  // Ru(β)
+  rotate(frame.rotation());
+  // S(s)
+  scale(frame.scaling());
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1"-->
 
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Agents: `event pollFeed()`
+### Frame notion: Scene-Graph
 
-<figure>
-    <img height='400' src='fig/arch2a.png' />
-    <figcaption>Agents: `event pollFeed()`</figcaption>
-</figure>
+```java
+ World
+  ^
+  |\
+  1 eye
+  ^
+  |\
+  2 3
+```
+
+```java
+Frame eye, f1, f2, f3;
+eye = new Frame();
+f1 = new Frame();
+f2 = new Frame(f1);
+f3 = new Frame(f1);
+```
+<!-- .element: class="fragment" data-fragment-index="1"-->
 
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Agents: `handle(event)`
+### Frame notion: Scene-Graph
 
-<figure>
-    <img height='400' src='fig/arch1b.png' />
-    <figcaption>Agents: `handle(event)`</figcaption>
-</figure>
+```java
+ World
+  ^
+  |\
+  1 eye
+  ^
+  |\
+  2 3
+```
+
+```java
+// enter f1
+pushMatrix();
+applyTransformation(f1);
+drawApplicationObject1();
+// enter f2
+pushMatrix();
+applyTransformation(f2);
+drawApplicationObject2();
+// "return" to f1
+popMatrix();
+// enter f3
+pushMatrix();
+applyTransformation(f3);
+drawApplicationObject3();
+// return to f1
+popMatrix();
+// return to World
+popMatrix();
+```
+<!-- .element: class="fragment" data-fragment-index="1"-->
 
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Agents: `event handleFeed()`
+### Scene class
+#### Default eye
 
-<figure>
-    <img height='400' src='fig/arch2b.png' />
-    <figcaption>Agents: `event handleFeed()`</figcaption>
-</figure>
+> ```scene = new Scene()```
+
+```java
+ World
+  ^
+  |\
+  1 eye
+  ^
+  |\
+  2 3
+```
+
+```java
+Frame eye, f1, f2, f3;
+// a default eye is also created
+scene = new Scene();
+f1 = new Frame(scene);
+f2 = new Frame(f1);
+f3 = new Frame(f1);
+```
+<!-- .element: class="fragment" data-fragment-index="1"-->
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Scene class
+#### Traversal algorithm
+
+> ```scene.traverse()```
+
+```java
+ World
+  ^
+  |\
+  1 eye
+  ^
+  |\
+  2 3
+```
+
+```java
+scene.traverse();
+```
+<!-- .element: class="fragment" data-fragment-index="1"-->
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Scene class
+#### Input
+
+> 1. Picking -> Tag a _frame_ using a [Human Interface Device (hid)](https://en.wikipedia.org/wiki/Human_interface_device) name
+
+> 2. Manipulation -> Physical space-based _frame_ interaction
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Scene class
+#### Input: Picking
+
+> [scene.setTrackedFrame(hid, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#setTrackedFrame-java.lang.String-frames.core.Frame-)
+
+<li class="fragment"> Low-level ray casting (yes/no): [scene.tracks(pixel, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#tracks-frames.primitives.Point-frames.core.Frame-)
+<li class="fragment"> (Optimized) High-level ray casting (updates the hid tracked-frame): [scene.cast(hid, pixel)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#cast-java.lang.String-frames.primitives.Point-)
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Scene class
+#### Input: Manipulation
+
+> frame interaction pattern: ```scene.interact(param1,..., paramN, frame)```
+
+> Tagged frame interaction pattern: ```scene.interact(hid, param1,..., paramN) = scene.interact(param1,..., paramN, defaultFrame(hid))```
+
+<li class="fragment"> ```param1,..., paramN``` are physical (screen-space) parameters
+<li class="fragment"> [scene.defaultFrame(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedFrame(hid) == null ? eye() : trackedFrame(hid)```
+<li class="fragment"> Examples: [scene.translate(dx, dy, dz, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-float-float-float-frames.core.Frame-) and [scene.translate(hid, dx, dy, dz)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-java.lang.String-float-float-) or [scene.rotate(roll, pitch, yaw, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-float-float-float-frames.core.Frame-) and [scene.rotate(hid, roll, pitch, yaw)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-java.lang.String-float-float-float-).
 
 H:
 
