@@ -164,6 +164,7 @@ V:
 
 ```java
 Frame eye, f1, f2, f3;
+// creates a hierarchy of 'detached-frames'
 eye = new Frame();
 f1 = new Frame();
 f2 = new Frame(f1);
@@ -231,6 +232,7 @@ V:
 Frame eye, f1, f2, f3;
 // a default eye is also created
 scene = new Scene();
+// creates a hierarchy of 'attached-frames'
 f1 = new Frame(scene);
 f2 = new Frame(f1);
 f3 = new Frame(f1);
@@ -321,32 +323,30 @@ V:
 ### Navigation
 
 <li class="fragment"> Orbit-like methods: all examples using a mouse
-<li class="fragment"> First person: first person
-<li class="fragment"> Third person: [FlockOfBoids](https://github.com/VisualComputing/framesjs/tree/processing/examples/Advanced/FlockOfBoids)
+<li class="fragment"> First & third person: [FlockOfBoids](https://github.com/VisualComputing/frames/tree/master/examples/3.Demos/FlockOfBoids)
 
 V:
 
 ## Applications
 ### Picking
 
-<li class="fragment"> `FIXED` picking precision, [FlockOfBoids](https://github.com/VisualComputing/framesjs/tree/processing/examples/Advanced/FlockOfBoids)
-<li class="fragment"> `ADAPTIVE` picking precision, [CajasOrientadas](https://github.com/VisualComputing/framesjs/tree/processing/examples/Advanced/CajasOrientadas)
-<li class="fragment"> `EXACT` picking precision, [PostEffects](https://github.com/VisualComputing/framesjs/tree/processing/examples/Demos/PostEffects)
+<li class="fragment"> `FIXED` & `ADAPTIVE` picking precision, [CajasOrientadas](https://github.com/VisualComputing/frames/tree/master/examples/2.AttachedFrames/CajasOrientadas)
+<li class="fragment"> `EXACT` picking precision, [Depth-of-field](https://github.com/VisualComputing/frames/tree/master/examples/2.AttachedFrames/DepthOfField)
 
 V:
 
 ## Applications
 ### Manipulation
 
-<li class="fragment"> All examples involving the [mouse]() (default _agent_)
-<li class="fragment"> [Space Navigator](https://github.com/VisualComputing/framesjs/tree/processing/examples/Demos/SpaceNavigator) (custom _agent_)
-<li class="fragment"> [Kinect 6-DOF cemera control](https://www.youtube.com/watch?v=G8SEzFMmMyI) (custom _agent_)
+<li class="fragment"> All [examples](https://github.com/VisualComputing/frames/tree/master/examples) use the mouse and/or the keyboard
+<li class="fragment"> [Space Navigator](https://github.com/VisualComputing/frames/tree/master/examples/3.Demos/SpaceNavigator)
 
 V:
 
 ## Applications
+### Application control
 
-Application control: [deformation](https://github.com/nakednous/Deformation)
+[Application control](https://github.com/VisualComputing/frames/tree/master/examples/3.Demos/ApplicationControl)
 
 H:
 
