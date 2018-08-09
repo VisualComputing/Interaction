@@ -89,6 +89,20 @@ classical 2D widgets:  menus and icons
 H:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+
+1. API considerations
+2. Frame notion
+    1. Behavior & Appearance
+    2. Frame hierarchy
+3. The Scene
+    1. Default Eye
+    2. Traversal algorithm
+    3. Picking & Manipulation
+4. Application Control
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### API considerations
 
 <li class="fragment"> Simplicity: Separate _application object_ behaviors from _input_
@@ -107,7 +121,8 @@ V:
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Frame notion: Behavior
+### Frame notion
+#### Behavior & Appearance
 
 ```java
 frame = new Frame();
@@ -134,7 +149,8 @@ applyTransformation(frame) {
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Frame notion: Scene-Graph
+### Frame notion
+#### Frame hierarchy
 
 ```java
  World
@@ -158,7 +174,8 @@ f3 = new Frame(f1);
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Frame notion: Scene-Graph
+### Frame notion
+#### Frame hierarchy
 
 ```java
  World
@@ -195,7 +212,7 @@ popMatrix();
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Scene class
+### The scene
 #### Default eye
 
 > ```scene = new Scene()```
@@ -223,7 +240,7 @@ f3 = new Frame(f1);
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Scene class
+### The scene
 #### Traversal algorithm
 
 > ```scene.traverse()```
@@ -246,8 +263,8 @@ scene.traverse();
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Scene class
-#### Input
+### The scene
+#### Picking & Manipulation
 
 > 1. Picking -> Tag a _frame_ using a [Human Interface Device (hid)](https://en.wikipedia.org/wiki/Human_interface_device) name
 
@@ -256,8 +273,8 @@ V:
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Scene class
-#### Input: Picking
+### The scene
+#### Picking & Manipulation
 
 > [scene.setTrackedFrame(hid, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#setTrackedFrame-java.lang.String-frames.core.Frame-)
 
@@ -267,8 +284,8 @@ V:
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Scene class
-#### Input: Manipulation
+### The scene
+#### Picking & Manipulation
 
 > frame interaction pattern: ```scene.interact(param1,..., paramN, frame)```
 
@@ -277,6 +294,18 @@ V:
 <li class="fragment"> ```param1,..., paramN``` are physical (screen-space) parameters
 <li class="fragment"> [scene.defaultFrame(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedFrame(hid) == null ? eye() : trackedFrame(hid)```
 <li class="fragment"> Examples: [scene.translate(dx, dy, dz, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-float-float-float-frames.core.Frame-) and [scene.translate(hid, dx, dy, dz)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-java.lang.String-float-float-) or [scene.rotate(roll, pitch, yaw, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-float-float-float-frames.core.Frame-) and [scene.rotate(hid, roll, pitch, yaw)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-java.lang.String-float-float-float-).
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Application control
+
+> frame interaction pattern: ```interact(param1,..., paramN, frame)```
+
+> Tagged frame interaction pattern: ```interact(hid, param1,..., paramN) = interact(param1,..., paramN, scene.defaultFrame(hid))```
+
+<li class="fragment"> ```param1,..., paramN``` are physical (screen-space) parameters
+<li class="fragment"> [scene.defaultFrame(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedFrame(hid) == null ? eye() : trackedFrame(hid)```
 
 H:
 
