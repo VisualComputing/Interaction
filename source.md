@@ -321,25 +321,49 @@ V:
 
 ## Applications
 ### Navigation
+#### Orbit-like methods
 
-<li class="fragment"> Orbit-like methods: all examples using a mouse
-<li class="fragment"> First & third person: [FlockOfBoids](https://github.com/VisualComputing/frames/tree/master/examples/3.Demos/FlockOfBoids)
+> All examples using a mouse
+
+V:
+
+## Applications
+### Navigation
+#### First & third person
+
+<video controls data-autoplay loop src="vid/flock.ogv"></video>
 
 V:
 
 ## Applications
 ### Picking
+#### `FIXED` & `ADAPTIVE` precision
 
-<li class="fragment"> `FIXED` & `ADAPTIVE` picking precision, [CajasOrientadas](https://github.com/VisualComputing/frames/tree/master/examples/2.AttachedFrames/CajasOrientadas)
-<li class="fragment"> `EXACT` picking precision, [Depth-of-field](https://github.com/VisualComputing/frames/tree/master/examples/2.AttachedFrames/DepthOfField)
+<video controls data-autoplay loop src="vid/cajasorientadas.ogv"></video>
+
+V:
+
+## Applications
+### Picking
+#### `EXACT` precision
+
+<video controls data-autoplay loop src="vid/dof.ogv"></video>
 
 V:
 
 ## Applications
 ### Manipulation
+#### Stadandar HID's
 
-<li class="fragment"> All [examples](https://github.com/VisualComputing/frames/tree/master/examples) use the mouse and/or the keyboard
-<li class="fragment"> [Space Navigator](https://github.com/VisualComputing/frames/tree/master/examples/3.Demos/SpaceNavigator)
+> All [examples](https://github.com/VisualComputing/frames/tree/master/examples) using a mouse and/or a keyboard
+
+V:
+
+## Applications
+### Manipulation
+#### Non-conventional HID's
+
+<video controls data-autoplay loop src="vid/spacenavigator.ogv"></video>
 
 V:
 
