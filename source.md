@@ -91,13 +91,8 @@ H:
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 
 1. API considerations
-2. Frame notion
-    1. Behavior & Appearance
-    2. Frame hierarchy
-3. The Scene
-    1. Default Eye
-    2. Traversal algorithm
-    3. Picking & Manipulation
+2. The eye
+3. Picking & Manipulation
 4. Application Control
 
 V:
@@ -105,43 +100,98 @@ V:
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### API considerations
 
-<li class="fragment"> Simplicity: Separate _application object_ behaviors from _input_
-<li class="fragment"> Flexibility: Simple default (common) behaviors vs challenging ones
+> The _scene_ is a high-level [Processing](https://processing.org/) scene-graph handler
+
+> A _frame_ is a 2D/3D coordinate system
+
+
+Simplicity: A _scene_ and some _frames_ attached to it implement the _3MITs_
 
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Frame notion
+### The scene
 
-> A _frame_ is defined by following affine (composed) transformation: `$T(x,y,z) * R_u(\beta) * S(s)$`, `$s > 0$`
+> High-level scene-graph object which provides eye, input and timing handling to [Processing](https://processing.org/)
 
-<li class="fragment"> A _frame_ is useful to position, orient and scale objects (including the _eye_) within a virtual environment
-<li class="fragment"> The scene may be rendered from any _frame_ point-of-view
+The _scene_ also implements some drawing routines not present in [Processing](https://processing.org/)
 
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Frame notion
-#### Behavior & Appearance
+### Default eye
 
 ```java
-frame = new Frame();
-pushMatrix();
-// behavior
-applyTransformation(frame);
-// appearance
-drawApplicationObject();
-popMatrix();
+ World
+  ^
+   \
+    eye
 ```
 
 ```java
-applyTransformation(frame) {
-  // T(x,y,z)
-  translate(frame.translation());
-  // Ru(β)
-  rotate(frame.rotation());
-  // S(s)
-  scale(frame.scaling());
+Scene scene;
+// to be run only at start up:
+void setup() {
+  Scene scene = new Scene();
+}
+```
+The scene _eye_ is just a [Frame](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html) instance
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Hierarchy setup
+
+```java
+ World
+  ^
+  |\
+  1 eye
+  ^
+  |\
+  2 3
+```
+
+```java
+Scene scene;
+Frame f1, f2, f3;
+// to be run only at start up:
+void setup() {
+  Scene scene = new Scene();
+  // creates a hierarchy of 'attached-frames'
+  f1 = new Frame(scene);
+  f2 = new Frame(f1);
+  f3 = new Frame(f1) {
+    // note that within visit() the geometry is defined
+    // at the frame local coordinate system
+    @Override
+    public void visit() {
+      sphere(50);
+    }
+  };
+}
+```
+Override the [Frame](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html) [visit()](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#visit--) to customize the frame role
+
+V:
+
+## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+### Hierarchy traversal algorithm
+
+```java
+ World
+  ^
+  |\
+  1 eye
+  ^
+  |\
+  2 3
+```
+
+```java
+// to be run continously
+void draw() {
+  scene.traverse();
 }
 ```
 <!-- .element: class="fragment" data-fragment-index="1"-->
@@ -149,124 +199,7 @@ applyTransformation(frame) {
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Frame notion
-#### Frame hierarchy
-
-```java
- World
-  ^
-  |\
-  1 eye
-  ^
-  |\
-  2 3
-```
-
-```java
-Frame eye, f1, f2, f3;
-// creates a hierarchy of 'detached-frames'
-eye = new Frame();
-f1 = new Frame();
-f2 = new Frame(f1);
-f3 = new Frame(f1);
-```
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Frame notion
-#### Frame hierarchy
-
-```java
- World
-  ^
-  |\
-  1 eye
-  ^
-  |\
-  2 3
-```
-
-```java
-// enter f1
-pushMatrix();
-applyTransformation(f1);
-drawApplicationObject1();
-// enter f2
-pushMatrix();
-applyTransformation(f2);
-drawApplicationObject2();
-// "return" to f1
-popMatrix();
-// enter f3
-pushMatrix();
-applyTransformation(f3);
-drawApplicationObject3();
-// return to f1
-popMatrix();
-// return to World
-popMatrix();
-```
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### The scene
-#### Default eye
-
-> ```scene = new Scene()```
-
-```java
- World
-  ^
-  |\
-  1 eye
-  ^
-  |\
-  2 3
-```
-
-```java
-Frame eye, f1, f2, f3;
-// a default eye is also created
-scene = new Scene();
-// creates a hierarchy of 'attached-frames'
-f1 = new Frame(scene);
-f2 = new Frame(f1);
-f3 = new Frame(f1);
-```
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### The scene
-#### Traversal algorithm
-
-> ```scene.traverse()```
-
-```java
- World
-  ^
-  |\
-  1 eye
-  ^
-  |\
-  2 3
-```
-
-```java
-scene.traverse();
-```
-<!-- .element: class="fragment" data-fragment-index="1"-->
-
-V:
-
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### The scene
-#### Picking & Manipulation
+### Picking & Manipulation
 
 > 1. Picking -> Tag a _frame_ using a [Human Interface Device (hid)](https://en.wikipedia.org/wiki/Human_interface_device) name
 
@@ -275,8 +208,7 @@ V:
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### The scene
-#### Picking & Manipulation
+### Picking & Manipulation
 
 > [scene.setTrackedFrame(hid, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#setTrackedFrame-java.lang.String-frames.core.Frame-)
 
@@ -286,14 +218,15 @@ V:
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### The scene
-#### Picking & Manipulation
+### Picking & Manipulation
 
-> frame interaction pattern: ```scene.interact(param1,..., paramN, frame)```
+> Frame interaction pattern: ```scene.interact(param1,..., paramN, frame)```
 
-> Tagged frame interaction pattern: ```scene.interact(hid, param1,..., paramN) = scene.interact(param1,..., paramN, defaultFrame(hid))```
+> HID interaction pattern: ```scene.interact(hid, param1,..., paramN) = scene.interact(param1,..., paramN, defaultFrame(hid))```
 
-<li class="fragment"> ```param1,..., paramN``` are physical (screen-space) parameters
+> Default HID interaction patter: ```scene.interact(param1,..., paramN) = scene.interact(param1,..., paramN, defaultFrame())```
+
+<li class="fragment"> ```param1,..., paramN``` define the user gesture
 <li class="fragment"> [scene.defaultFrame(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedFrame(hid) == null ? eye() : trackedFrame(hid)```
 <li class="fragment"> Examples: [scene.translate(dx, dy, dz, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-float-float-float-frames.core.Frame-) and [scene.translate(hid, dx, dy, dz)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-java.lang.String-float-float-) or [scene.rotate(roll, pitch, yaw, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-float-float-float-frames.core.Frame-) and [scene.rotate(hid, roll, pitch, yaw)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-java.lang.String-float-float-float-).
 
@@ -302,11 +235,15 @@ V:
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Application control
 
-> frame interaction pattern: ```interact(param1,..., paramN, frame)```
+Override [Frame.interact(java.lang.Object... gesture)](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#interact-java.lang.Object...-)
 
-> Tagged frame interaction pattern: ```interact(hid, param1,..., paramN) = interact(param1,..., paramN, scene.defaultFrame(hid))```
+> Frame interaction pattern: ```interact(Frame frame, Object... gesture) = frame.interact(gesture)```
 
-<li class="fragment"> ```param1,..., paramN``` are physical (screen-space) parameters
+> HID interaction pattern: ```interact(String hid, Object... gesture) = interact(scene.defaultFrame(hid), gesture)```
+
+> Default HID interaction pattern 2: ```interact(Object... gesture) = interact(scene.defaultFrame(), gesture)```
+
+<li class="fragment"> ```Object...``` define the user gesture
 <li class="fragment"> [scene.defaultFrame(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedFrame(hid) == null ? eye() : trackedFrame(hid)```
 
 H:
@@ -370,7 +307,7 @@ V:
 ## Applications
 ### Application control
 
-[Application control](https://github.com/VisualComputing/frames/tree/master/examples/3.Demos/ApplicationControl)
+<video controls data-autoplay loop src="vid/contol.ogv"></video>
 
 H:
 
