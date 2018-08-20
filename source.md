@@ -307,7 +307,7 @@ V:
 ## Applications
 ### Application control
 
-<video controls data-autoplay loop src="vid/contol.ogv"></video>
+<video controls data-autoplay loop src="vid/control.ogv"></video>
 
 H:
 
