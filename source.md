@@ -235,7 +235,7 @@ V:
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Application control
 
-Override [Frame.interact(java.lang.Object... gesture)](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#interact-java.lang.Object...-)
+Override [Frame.interact(Object... gesture)](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#interact-java.lang.Object...-)
 
 > Frame interaction pattern: ```scene.control(Frame frame, Object... gesture) = frame.interact(gesture)```
 
