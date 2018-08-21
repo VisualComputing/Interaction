@@ -237,11 +237,11 @@ V:
 
 Override [Frame.interact(java.lang.Object... gesture)](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#interact-java.lang.Object...-)
 
-> Frame interaction pattern: ```interact(Frame frame, Object... gesture) = frame.interact(gesture)```
+> Frame interaction pattern: ```scene.control(Frame frame, Object... gesture) = frame.interact(gesture)```
 
-> HID interaction pattern: ```interact(String hid, Object... gesture) = interact(scene.defaultFrame(hid), gesture)```
+> HID interaction pattern: ```scene.control(String hid, Object... gesture) = interact(scene.defaultFrame(hid), gesture)```
 
-> Default HID interaction pattern 2: ```interact(Object... gesture) = interact(scene.defaultFrame(), gesture)```
+> Default HID interaction pattern 2: ```scene.defaultHIDControl(Object... gesture) = interact(scene.defaultFrame(), gesture)```
 
 <li class="fragment"> ```Object...``` define the user gesture
 <li class="fragment"> [scene.defaultFrame(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedFrame(hid) == null ? eye() : trackedFrame(hid)```
