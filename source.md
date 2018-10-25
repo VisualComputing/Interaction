@@ -18,7 +18,7 @@
 
 H:
 
-# Interaction in [frames](https://github.com/VisualComputing/framesjs)
+# Interaction in [frames](https://github.com/VisualComputing/frames)
 
 Jean Pierre Charalambos
 
