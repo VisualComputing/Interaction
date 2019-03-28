@@ -18,7 +18,7 @@
 
 H:
 
-# Interaction in [frames](https://github.com/VisualComputing/frames)
+# Interaction in nub
 
 Jean Pierre Charalambos
 
@@ -27,7 +27,7 @@ H:
 # Index
 
  1. Goal <!-- .element: class="fragment" data-fragment-index="1"-->
- 2. Frames' design<!-- .element: class="fragment" data-fragment-index="2"-->
+ 2. Nub design<!-- .element: class="fragment" data-fragment-index="2"-->
  3. Applications<!-- .element: class="fragment" data-fragment-index="3"-->
  4. Future work<!-- .element: class="fragment" data-fragment-index="4"-->
  
@@ -88,7 +88,7 @@ classical 2D widgets:  menus and icons
 
 H:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 
 1. API considerations
 2. The eye
@@ -97,19 +97,18 @@ H:
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### API considerations
 
 > The _scene_ is a high-level [Processing](https://processing.org/) scene-graph handler
 
 > A _node_ encapsulates a 2D/3D coordinate system
 
-
 Simplicity: A _scene_ and some _nodes_ attached to it implement the _3MITs_
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### The scene
 
 > High-level scene-graph object which provides eye, input and timing handling to [Processing](https://processing.org/)
@@ -118,7 +117,7 @@ The _scene_ also implements some drawing routines not present in [Processing](ht
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### Default eye
 
 ```java
@@ -135,11 +134,11 @@ void setup() {
   Scene scene = new Scene();
 }
 ```
-The scene _eye_ is just a [Node](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html) instance
+The scene _eye_ is just a [Node](https://visualcomputing.github.io/nub-javadocs/nub/core/Node.html) instance
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### Hierarchy setup
 
 ```java
@@ -171,11 +170,11 @@ void setup() {
   };
 }
 ```
-Override the [Node](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html) _graphics(PGraphics)_ method to customize the node role
+Override the [Node](https://visualcomputing.github.io/nub-javadocs/nub/core/Node.html) _graphics(PGraphics)_ method to customize the node role
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### Hierarchy rendering algorithm
 
 ```java
@@ -198,26 +197,26 @@ void draw() {
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### Picking & Manipulation
 
-> 1. Picking -> Tag a _frame_ using a [Human Interface Device (hid)](https://en.wikipedia.org/wiki/Human_interface_device) name
+> 1. Picking -> Tag a _node_ using a [Human Interface Device (hid)](https://en.wikipedia.org/wiki/Human_interface_device) name
 
-> 2. Manipulation -> Physical space-based _frame_ interaction
+> 2. Manipulation -> Physical space-based _node_ interaction
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### Picking & Manipulation
 
-> [scene.setTrackedNode(hid, node)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#setTrackedFrame-java.lang.String-frames.core.Frame-)
+> [scene.setTrackedNode(hid, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#setTrackedNode-java.lang.String-nub.core.Node-)
 
-<li class="fragment"> Low-level ray casting (yes/no): [scene.tracks(pixel, node)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#tracks-frames.primitives.Point-frames.core.Frame-)
-<li class="fragment"> (Optimized) High-level ray casting (updates the hid tracked-node): [scene.cast(hid, pixel)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#cast-java.lang.String-frames.primitives.Point-)
+<li class="fragment"> Low-level ray casting (yes/no): [scene.tracks(pixel, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tracks-nub.primitives.Point-nub.core.Node-)
+<li class="fragment"> (Optimized) High-level ray casting (updates the hid tracked-node): [scene.cast(hid, pixel)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#cast-java.lang.String-nub.primitives.Point-)
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### Picking & Manipulation
 
 > Node interaction pattern: ```scene.interact(param1,..., paramN, node)```
@@ -227,15 +226,15 @@ V:
 > Default HID interaction patter: ```scene.interact(param1,..., paramN) = scene.interact(param1,..., paramN, defaultNode())```
 
 <li class="fragment"> ```param1,..., paramN``` define the user gesture
-<li class="fragment"> [scene.defaultNode(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedNode(hid) == null ? eye() : trackedNode(hid)```
-<li class="fragment"> Examples: [scene.translate(dx, dy, dz, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-float-float-float-frames.core.Frame-) and [scene.translate(hid, dx, dy, dz)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-java.lang.String-float-float-) or [scene.rotate(roll, pitch, yaw, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-float-float-float-frames.core.Frame-) and [scene.rotate(hid, roll, pitch, yaw)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-java.lang.String-float-float-float-).
+<li class="fragment"> [scene.defaultNode(hid)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#defaultNode-java.lang.String-): ```return trackedNode(hid) == null ? eye() : trackedNode(hid)```
+<li class="fragment"> Examples: [scene.translate(dx, dy, dz, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#translate-float-float-float-nub.core.Node-) and [scene.translate(hid, dx, dy, dz)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#translate-java.lang.String-float-float-) or [scene.rotate(roll, pitch, yaw, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#rotate-float-float-float-nub.core.Node-) and [scene.rotate(hid, roll, pitch, yaw)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#rotate-java.lang.String-float-float-float-).
 
 V:
 
-## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### Application control
 
-Override [Node.interact(Object... gesture)](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#interact-java.lang.Object...-)
+Override [Node.interact(Object... gesture)](https://visualcomputing.github.io/nub-javadocs/nub/core/Node.html#interact-java.lang.Object...-)
 
 > Node interaction pattern: ```scene.control(Node node, Object... gesture) = node.interact(gesture)```
 
@@ -244,7 +243,7 @@ Override [Node.interact(Object... gesture)](https://visualcomputing.github.io/fr
 > Default HID interaction pattern 2: ```scene.defaultHIDControl(Object... gesture) = interact(scene.defaultNode(), gesture)```
 
 <li class="fragment"> ```Object...``` define the user gesture
-<li class="fragment"> [scene.defaultNode(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedNode(hid) == null ? eye() : trackedNode(hid)```
+<li class="fragment"> [scene.defaultNode(hid)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#defaultNode-java.lang.String-): ```return trackedNode(hid) == null ? eye() : trackedNode(hid)```
 
 H:
 
@@ -292,7 +291,7 @@ V:
 ### Manipulation
 #### Stadandar HID's
 
-> All [examples](https://github.com/VisualComputing/frames/tree/master/examples) using a mouse and/or a keyboard
+> All [examples](https://github.com/VisualComputing/nubjs/tree/processing/examples) using a mouse and/or a keyboard
 
 V:
 
