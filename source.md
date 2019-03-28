@@ -102,10 +102,10 @@ V:
 
 > The _scene_ is a high-level [Processing](https://processing.org/) scene-graph handler
 
-> A _frame_ is a 2D/3D coordinate system
+> A _node_ encapsulates a 2D/3D coordinate system
 
 
-Simplicity: A _scene_ and some _frames_ attached to it implement the _3MITs_
+Simplicity: A _scene_ and some _nodes_ attached to it implement the _3MITs_
 
 V:
 
@@ -135,7 +135,7 @@ void setup() {
   Scene scene = new Scene();
 }
 ```
-The scene _eye_ is just a [Frame](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html) instance
+The scene _eye_ is just a [Node](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html) instance
 
 V:
 
@@ -154,29 +154,29 @@ V:
 
 ```java
 Scene scene;
-Frame f1, f2, f3;
+Node n1, n2, n3;
 // to be run only at start up:
 void setup() {
   Scene scene = new Scene();
-  // creates a hierarchy of 'attached-frames'
-  f1 = new Frame(scene);
-  f2 = new Frame(f1);
-  f3 = new Frame(f1) {
-    // note that within visit() the geometry is defined
-    // at the frame local coordinate system
+  // creates a hierarchy of 'attached-nodes'
+  n1 = new Node(scene);
+  n2 = new Node(n1);
+  n3 = new Node(n1) {
+    // note that within graphics the geometry is defined
+    // at the node local coordinate system
     @Override
-    public void visit() {
-      sphere(50);
+    public boolean graphics(PGraphics pg) {
+      pg.sphere(50);
     }
   };
 }
 ```
-Override the [Frame](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html) [visit()](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#visit--) to customize the frame role
+Override the [Node](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html) _graphics(PGraphics)_ method to customize the node role
 
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
-### Hierarchy traversal algorithm
+### Hierarchy rendering algorithm
 
 ```java
  World
@@ -191,7 +191,7 @@ V:
 ```java
 // to be run continously
 void draw() {
-  scene.traverse();
+  scene.render();
 }
 ```
 <!-- .element: class="fragment" data-fragment-index="1"-->
@@ -210,24 +210,24 @@ V:
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Picking & Manipulation
 
-> [scene.setTrackedFrame(hid, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#setTrackedFrame-java.lang.String-frames.core.Frame-)
+> [scene.setTrackedNode(hid, node)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#setTrackedFrame-java.lang.String-frames.core.Frame-)
 
-<li class="fragment"> Low-level ray casting (yes/no): [scene.tracks(pixel, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#tracks-frames.primitives.Point-frames.core.Frame-)
-<li class="fragment"> (Optimized) High-level ray casting (updates the hid tracked-frame): [scene.cast(hid, pixel)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#cast-java.lang.String-frames.primitives.Point-)
+<li class="fragment"> Low-level ray casting (yes/no): [scene.tracks(pixel, node)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#tracks-frames.primitives.Point-frames.core.Frame-)
+<li class="fragment"> (Optimized) High-level ray casting (updates the hid tracked-node): [scene.cast(hid, pixel)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#cast-java.lang.String-frames.primitives.Point-)
 
 V:
 
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Picking & Manipulation
 
-> Frame interaction pattern: ```scene.interact(param1,..., paramN, frame)```
+> Node interaction pattern: ```scene.interact(param1,..., paramN, node)```
 
-> HID interaction pattern: ```scene.interact(hid, param1,..., paramN) = scene.interact(param1,..., paramN, defaultFrame(hid))```
+> HID interaction pattern: ```scene.interact(hid, param1,..., paramN) = scene.interact(param1,..., paramN, defaultNode(hid))```
 
-> Default HID interaction patter: ```scene.interact(param1,..., paramN) = scene.interact(param1,..., paramN, defaultFrame())```
+> Default HID interaction patter: ```scene.interact(param1,..., paramN) = scene.interact(param1,..., paramN, defaultNode())```
 
 <li class="fragment"> ```param1,..., paramN``` define the user gesture
-<li class="fragment"> [scene.defaultFrame(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedFrame(hid) == null ? eye() : trackedFrame(hid)```
+<li class="fragment"> [scene.defaultNode(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedNode(hid) == null ? eye() : trackedNode(hid)```
 <li class="fragment"> Examples: [scene.translate(dx, dy, dz, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-float-float-float-frames.core.Frame-) and [scene.translate(hid, dx, dy, dz)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#translate-java.lang.String-float-float-) or [scene.rotate(roll, pitch, yaw, frame)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-float-float-float-frames.core.Frame-) and [scene.rotate(hid, roll, pitch, yaw)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#rotate-java.lang.String-float-float-float-).
 
 V:
@@ -235,16 +235,16 @@ V:
 ## [Frames](https://visualcomputing.github.io/frames-javadocs/) Design
 ### Application control
 
-Override [Frame.interact(Object... gesture)](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#interact-java.lang.Object...-)
+Override [Node.interact(Object... gesture)](https://visualcomputing.github.io/frames-javadocs/frames/core/Frame.html#interact-java.lang.Object...-)
 
-> Frame interaction pattern: ```scene.control(Frame frame, Object... gesture) = frame.interact(gesture)```
+> Node interaction pattern: ```scene.control(Node node, Object... gesture) = node.interact(gesture)```
 
-> HID interaction pattern: ```scene.control(String hid, Object... gesture) = interact(scene.defaultFrame(hid), gesture)```
+> HID interaction pattern: ```scene.control(String hid, Object... gesture) = interact(scene.defaultNode(hid), gesture)```
 
-> Default HID interaction pattern 2: ```scene.defaultHIDControl(Object... gesture) = interact(scene.defaultFrame(), gesture)```
+> Default HID interaction pattern 2: ```scene.defaultHIDControl(Object... gesture) = interact(scene.defaultNode(), gesture)```
 
 <li class="fragment"> ```Object...``` define the user gesture
-<li class="fragment"> [scene.defaultFrame(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedFrame(hid) == null ? eye() : trackedFrame(hid)```
+<li class="fragment"> [scene.defaultNode(hid)](https://visualcomputing.github.io/frames-javadocs/frames/core/Graph.html#defaultFrame-java.lang.String-): ```return trackedNode(hid) == null ? eye() : trackedNode(hid)```
 
 H:
 
