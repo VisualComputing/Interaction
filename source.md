@@ -212,7 +212,7 @@ V:
 > [tag(tag, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tag-java.lang.String-nub.core.Node-)
 
 <li class="fragment"> Low-level ray casting (yes/no): [tracks(node, pixelX, pixelY)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tracks-nub.core.Node-int-int-)
-<li class="fragment"> (Optimized) High-level ray casting (updates the tagged-node): [tag(hid, pixelX, pixelY)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tag-java.lang.String-int-int-)
+<li class="fragment"> (Optimized) High-level ray casting (updates the tagged-node): [tag(tag, pixelX, pixelY)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tag-java.lang.String-int-int-)
 
 V:
 
@@ -285,7 +285,7 @@ V:
 
 ## Applications
 ### Interaction
-#### Stadandar HID's
+#### Standard devices
 
 > All [examples](https://github.com/VisualComputing/nubjs/tree/processing/examples) using a mouse and/or a keyboard
 
@@ -293,7 +293,7 @@ V:
 
 ## Applications
 ### Interaction
-#### Non-conventional HID's
+#### Non-conventional devices
 
 <video controls data-autoplay loop src="vid/spacenavigator.ogv"></video>
 
