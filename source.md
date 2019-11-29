@@ -170,12 +170,12 @@ void setup() {
   };
 }
 ```
-Override the [Node](https://visualcomputing.github.io/nub-javadocs/nub/core/Node.html) _graphics(PGraphics)_ method to customize the node role
+Override the [Node](https://visualcomputing.github.io/nub-javadocs/nub/core/Node.html) _graphics(PGraphics)_ method to customize the node appearance.
 
 V:
 
 ## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
-### Hierarchy rendering algorithm
+### [Hierarchical rendering](https://github.com/VisualComputing/nub#rendering)
 
 ```java
  World
@@ -198,52 +198,48 @@ void draw() {
 V:
 
 ## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
-### Picking & Manipulation
+### Picking & Interaction
 
-> 1. Picking -> Tag a _node_ using a [Human Interface Device (hid)](https://en.wikipedia.org/wiki/Human_interface_device) name
+> 1. Picking -> Tag a _node_ using an arbitrary name
 
-> 2. Manipulation -> Physical space-based _node_ interaction
-
-V:
-
-## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
-### Picking & Manipulation
-
-> [scene.setTrackedNode(hid, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#setTrackedNode-java.lang.String-nub.core.Node-)
-
-<li class="fragment"> Low-level ray casting (yes/no): [scene.tracks(pixel, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tracks-nub.primitives.Point-nub.core.Node-)
-<li class="fragment"> (Optimized) High-level ray casting (updates the hid tracked-node): [scene.cast(hid, pixel)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#cast-java.lang.String-nub.primitives.Point-)
+> 2. Interaction -> Converts user gesture data into a _node_ interaction
 
 V:
 
 ## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
-### Picking & Manipulation
+### Picking & Interaction
 
-> Node interaction pattern: ```scene.interact(param1,..., paramN, node)```
+> [tag(tag, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tag-java.lang.String-nub.core.Node-)
 
-> HID interaction pattern: ```scene.interact(hid, param1,..., paramN) = scene.interact(param1,..., paramN, defaultNode(hid))```
-
-> Default HID interaction patter: ```scene.interact(param1,..., paramN) = scene.interact(param1,..., paramN, defaultNode())```
-
-<li class="fragment"> ```param1,..., paramN``` define the user gesture
-<li class="fragment"> [scene.defaultNode(hid)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#defaultNode-java.lang.String-): ```return trackedNode(hid) == null ? eye() : trackedNode(hid)```
-<li class="fragment"> Examples: [scene.translate(dx, dy, dz, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#translate-float-float-float-nub.core.Node-) and [scene.translate(hid, dx, dy, dz)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#translate-java.lang.String-float-float-) or [scene.rotate(roll, pitch, yaw, node)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#rotate-float-float-float-nub.core.Node-) and [scene.rotate(hid, roll, pitch, yaw)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#rotate-java.lang.String-float-float-float-).
+<li class="fragment"> Low-level ray casting (yes/no): [tracks(node, pixelX, pixelY)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tracks-nub.core.Node-int-int-)
+<li class="fragment"> (Optimized) High-level ray casting (updates the tagged-node): [tag(hid, pixelX, pixelY)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#tag-java.lang.String-int-int-)
 
 V:
 
 ## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
-### Application control
+### Picking & Interaction
 
-Override [Node.interact(Object... gesture)](https://visualcomputing.github.io/nub-javadocs/nub/core/Node.html#interact-java.lang.Object...-)
+> Eye interaction pattern: ```interactEye(gesture...)```
 
-> Node interaction pattern: ```scene.control(Node node, Object... gesture) = node.interact(gesture)```
+> Node interaction pattern: ```interactNode(node, gesture...)```
 
-> HID interaction pattern: ```scene.control(String hid, Object... gesture) = interact(scene.defaultNode(hid), gesture)```
+> Tagged node interaction pattern: ```interactTag(tag, gesture...) : interactNode(node(tag), gesture...)```
 
-> Default HID interaction pattern 2: ```scene.defaultHIDControl(Object... gesture) = interact(scene.defaultNode(), gesture)```
+> Tagged node or eye interaction pattern: ```interact(tag, gesture...) : if (!interactTag(tag, gesture...)) interactEye(gesture...)```
 
-<li class="fragment"> ```Object...``` define the user gesture
-<li class="fragment"> [scene.defaultNode(hid)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#defaultNode-java.lang.String-): ```return trackedNode(hid) == null ? eye() : trackedNode(hid)```
+<li class="fragment"> ```gesture...``` is a [varargs](https://docs.oracle.com/javase/8/docs/technotes/guides/language/varargs.html) argument defining the [screen-space](https://github.com/VisualComputing/nub#space-transformations) user gesture.
+<li class="fragment"> [node(tag)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#node-java.lang.String-) returns the node tagged with ```tag```, which may be ```null```.
+<li class="fragment"> Details and code snippets [here](https://github.com/VisualComputing/nub#interactivity).
+
+V:
+
+## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
+### Picking & Interaction: Custom node behaviors
+
+Override the node [interact(gesture...)](https://visualcomputing.github.io/nub-javadocs/nub/core/Node.html#interact-java.lang.Object...-) method and then invoke it with the _node interaction_ or _tagged node interaction_ patterns above.
+
+<li class="fragment"> Check the [CustomNodeInteraction](https://github.com/VisualComputing/nub/blob/master/examples/demos/CustomNodeInteraction/CustomNodeInteraction.pde) example.
+<li class="fragment"> To customize the eye behavior, refer to the [CustomEyeInteraction](https://github.com/VisualComputing/nub/tree/master/examples/demos/CustomEyeInteraction) example.
 
 H:
 
