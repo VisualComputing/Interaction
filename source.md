@@ -46,7 +46,7 @@ V:
 Three main interaction tasks (see ['A Survey of Interaction Techniques for Interactive 3D Environments', Jankowski et al](https://hal.inria.fr/hal-00789413/)):
 
 <li class="fragment"> Navigation
-<li class="fragment"> Picking and manipulation
+<li class="fragment"> Picking and interaction
 <li class="fragment"> Application control
 
 V:
@@ -63,10 +63,10 @@ Basic camera types:
 V:
 
 ## Goal: Main interaction tasks
-### 2. Picking & Manipulation
+### 2. Picking & Interaction
 
 <li class="fragment"> Picking strategies: from input sources, programmatically
-<li class="fragment"> Manipulation: emulate 6 DOF's (Default behavior from multiple _input Sources_)
+<li class="fragment"> Interaction: emulate 6 DOF's (Default behavior from multiple _input Sources_)
 
 V:
 
@@ -92,7 +92,7 @@ H:
 
 1. API considerations
 2. The eye
-3. Picking & Manipulation
+3. Picking & Interaction
 4. Application Control
 
 V:
@@ -246,7 +246,7 @@ H:
 ## Applications
 
 * Navigation
-* Picking and manipulation
+* Picking and interaction
 * Application control
 
 V:
@@ -284,7 +284,7 @@ V:
 V:
 
 ## Applications
-### Manipulation
+### Interaction
 #### Stadandar HID's
 
 > All [examples](https://github.com/VisualComputing/nubjs/tree/processing/examples) using a mouse and/or a keyboard
@@ -292,7 +292,7 @@ V:
 V:
 
 ## Applications
-### Manipulation
+### Interaction
 #### Non-conventional HID's
 
 <video controls data-autoplay loop src="vid/spacenavigator.ogv"></video>
