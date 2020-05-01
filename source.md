@@ -219,13 +219,9 @@ V:
 ## [Nub](https://visualcomputing.github.io/nub-javadocs/) Design
 ### Picking & Interaction
 
-> Eye interaction pattern: ```interactEye(gesture...)```
-
 > Node interaction pattern: ```interactNode(node, gesture...)```
 
 > Tagged node interaction pattern: ```interactTag(tag, gesture...) : interactNode(node(tag), gesture...)```
-
-> Tagged node or eye interaction pattern: ```interact(tag, gesture...) : if (!interactTag(tag, gesture...)) interactEye(gesture...)```
 
 <li class="fragment"> ```gesture...``` is a [varargs](https://docs.oracle.com/javase/8/docs/technotes/guides/language/varargs.html) argument defining the [screen-space](https://github.com/VisualComputing/nub#space-transformations) user gesture.
 <li class="fragment"> [node(tag)](https://visualcomputing.github.io/nub-javadocs/nub/core/Graph.html#node-java.lang.String-) returns the node tagged with ```tag```, which may be ```null```.
