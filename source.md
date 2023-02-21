@@ -20,7 +20,8 @@ H:
 
 # Interaction in nub
 
-Jean Pierre Charalambos
+Jean Pierre Charalambos  
+Universidad Nacional de Colombia
 
 H:
 
