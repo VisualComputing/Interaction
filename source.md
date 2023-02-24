@@ -21,7 +21,9 @@ H:
 # Interaction in nub
 
 Jean Pierre Charalambos  
-[Universidad Nacional de Colombia](https://unal.edu.co/)
+[Universidad Nacional de Colombia](https://unal.edu.co/)  
+Presentation best seen [online](https://visualcomputing.github.io/Interaction/)  
+See also the [source code](https://github.com/VisualComputing/Interaction)
 
 H:
 
